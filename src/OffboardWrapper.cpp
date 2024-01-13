@@ -202,7 +202,15 @@ void OffboardWrapper::positioncmdCallback(const geometry_msgs::PoseStamped::Cons
   planning_position_setpoint_.pose.position.x = cmd->pose.position.x;
   planning_position_setpoint_.pose.position.y = cmd->pose.position.y;
   planning_position_setpoint_.pose.position.z = cmd->pose.position.z;
-  psi_cmd_ = 0;
+
+  tf::Quaternion oq_;
+  oq_.setX(cmd->pose.orientation.x);
+  oq_.setY(cmd->pose.orientation.y);
+  oq_.setZ(cmd->pose.orientation.z);
+  oq_.setW(cmd->pose.orientation.w);
+  double roll, pitch, psi;
+  tf::Matrix3x3(oq_).getRPY(roll, pitch, psi);
+  psi_cmd_ = psi;
 }
 
 // void OffboardWrapper::localCallback(const geometry_msgs::PoseStamped::ConstPtr &msg)

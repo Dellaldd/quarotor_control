@@ -9,7 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
 )
 find_package(Eigen3 REQUIRED)
-
+find_package(Boost REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES Quarotor_Feedback_Controller
@@ -21,6 +21,7 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
@@ -45,7 +46,8 @@ add_executable(quarotor_feedback_controller1
 )
 
 add_executable(SendCmdTest
-              src/SendCmdTest.cpp
+              # src/SendCmdTest.cpp
+              src/SendCommandCircle.cpp
               )
 
 target_link_libraries(quarotor_feedback_controller0
