@@ -36,8 +36,9 @@ void SendCommandCircle::cmdCallback(const ros::TimerEvent& event){
     if(!start_state && rc_state == 1 && current_state == HOVER){
 
         if(current_time - start_time > 10){
-            current_state == CIRCLE;
             cmd = start_pose;
+            start_planning_time = current_time;
+            current_state == CIRCLE;
         }
     }
 
