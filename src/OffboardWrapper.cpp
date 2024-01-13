@@ -1,5 +1,7 @@
 #include "OffboardWrapper.h"
 
+using namespace std;
+
 OffboardWrapper::OffboardWrapper(geometry_msgs::PoseStamped position_setpoint, std::string id, std::string node_id, std::string dataset)
 {
   uav_id = id;
@@ -267,10 +269,11 @@ void OffboardWrapper::run()
 {
   wrap_data.begin_time = ros::Time::now();
   QuadrotorFeedbackController c1(start_position_setpoint_, &wrap_data);
-  QuadrotorAggressiveController c2(&wrap_data);
-  getEndPoint(); // end_position_setpoint_ from this function
-  c2.readCsvData(dataset_address);
-  QuadrotorFeedbackController c3(end_position_setpoint_, &wrap_data);
+  cout << "22222222" << endl;
+  // QuadrotorAggressiveController c2(&wrap_data);
+  // getEndPoint(); // end_position_setpoint_ from this function
+  //c2.readCsvData(dataset_address);
+  // QuadrotorFeedbackController c3(end_position_setpoint_, &wrap_data);
 
   ros::Rate rate(LOOP_FREQUENCY);
 
@@ -348,9 +351,9 @@ void OffboardWrapper::run()
 
     case END:
       // printf("aggressive flight is done!!\n");
-      c3.loadLatestData();
-      c3.positionControlFeedback();
-      c3.velocityControlFeedback();
+      // c3.loadLatestData();
+      // c3.positionControlFeedback();
+      // c3.velocityControlFeedback();
       break;
     default:
       break;

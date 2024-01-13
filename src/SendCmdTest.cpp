@@ -31,15 +31,15 @@ enum state1{
     START1,HOVER1,HOVER2,PLAN1,END1,STOP1,FREE1
 };
 
-const double AMPLITUDE = 1.5; //幅值
+const double AMPLITUDE = 0.7; //幅值
 const double FREQUENCY = 0.05; //频率
  
-Point start(0.0f, 0.6f, 1.0f);
+Point start(0.0f, 0.0f, 1.0f);
 // Point hover(-1.5f, 0.6f, 1.0f);
-Point hover(0.0f, 0.6f, 1.0f);
-Point plan(0.0f, 0.6f, 1.0f);
-Point end1(0.0f, 0.6f, 1.0f);
-Point stop(0.0f, 0.6f, 0.05f);
+Point hover(0.0f, 0.0f, 1.0f);
+Point plan(0.0f, 0.0f, 1.0f);
+Point end1(0.0f, 0.0f, 1.0f);
+Point stop(0.0f, 0.0f, 0.05f);
 
 Point SetPoint(0.0f, 0.5f, 1.0f);
 
@@ -84,10 +84,10 @@ void cmdCallback(const ros::TimerEvent& event){
         }else if((ros::Time::now() - last_time).toSec() <= 30.0)
         {
             current_state = HOVER2;
-        }else if((ros::Time::now() - last_time).toSec() <= 230.0)
+        }else if((ros::Time::now() - last_time).toSec() <= 40.0)
         {
             current_state = PLAN1;
-        }else if((ros::Time::now() - last_time).toSec() <= 240.0)
+        }else if((ros::Time::now() - last_time).toSec() <= 50.0)
         {
             current_state = END1;
         }else

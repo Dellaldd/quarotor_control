@@ -48,6 +48,11 @@ add_executable(SendCmdTest
               src/SendCmdTest.cpp
               )
 
+catkin_install_python(PROGRAMS
+  script/vel.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 target_link_libraries(quarotor_feedback_controller0
   ${catkin_LIBRARIES}
 )

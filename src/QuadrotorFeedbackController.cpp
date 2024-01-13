@@ -157,7 +157,7 @@ void QuadrotorFeedbackController::velocityControlFeedback(){
   if(velocity_i_z_ < -1)
     velocity_i_z_ = -1;
 
-  double thrust_cmd_ = 0.36 + kp_hover_vz_ * velocity_error_[2] + velocity_i_z_;
+  double thrust_cmd_ = 0.37 + kp_hover_vz_ * velocity_error_[2] + velocity_i_z_;
   if(thrust_cmd_ >= 0.6)
     thrust_cmd_ = 0.6;
   if(thrust_cmd_ <= 0.01)
@@ -321,7 +321,7 @@ void QuadrotorFeedbackController::velocityPlanningFeedback(double psi_cmd){
   if(velocity_i_z_ < -1)
     velocity_i_z_ = -1;
 
-  double thrust_cmd_ = 0.36 + kp_hover_vz_ * velocity_error_[2] + velocity_i_z_;
+  double thrust_cmd_ = 0.37 + kp_hover_vz_ * velocity_error_[2] + velocity_i_z_;
   if(thrust_cmd_ >= 0.6)
     thrust_cmd_ = 0.6;
   if(thrust_cmd_ <= 0.01)
