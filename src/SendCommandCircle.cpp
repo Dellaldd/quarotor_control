@@ -12,8 +12,7 @@ SendCommandCircle::SendCommandCircle(string path, geometry_msgs::PoseStamped hov
 
     cmd_timer = nh.createTimer(ros::Duration(0.01), &SendCommandCircle::cmdCallback, this);
     pos_cmd_sub = nh.subscribe<mavros_msgs::VFR_HUD>("/mavros/vfr_hud",10,&SendCommandCircle::rc_state_Callback_cmd, this);
-    pos_cmd_pub = nh.advertise<geometry_msgs::PoseStamped>("/planning/pos_cmd", 50);
-    
+    pos_cmd_pub = nh.advertise<geometry_msgs::PoseStamped>("/planning/pos_cmd", 50);    
 }
 
 SendCommandCircle::~SendCommandCircle()
@@ -119,7 +118,8 @@ void SendCommandCircle::loadtrajectorydata(){
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "cmd_test");
-    string trajpath = "/home/ldd/quarotor_controller/src/quarotor_control/library/circle_yaw.txt";
+    string datapath = "test.txt";
+    string trajpath = "/home/ldd/quarotor_controller/src/quarotor_control/library/" + datapath;
     geometry_msgs::PoseStamped hover_state;
 
     hover_state.pose.position.x = 0;
