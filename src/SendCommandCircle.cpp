@@ -129,7 +129,7 @@ void SendCommandCircle::loadtrajectorydata(){
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "cmd_test");
-    string datapath = "circle_yaw.txt";
+    string datapath = "no_yaw_oval.txt";
     string trajpath = "/home/coolpi/work/openvins/quarotor_control/src/quarotor_feedback_controller/library/" + datapath;
     geometry_msgs::PoseStamped hover_state;
 
