@@ -4,7 +4,7 @@
 using namespace std;
 
 SendCommandCircle::SendCommandCircle(string path, geometry_msgs::PoseStamped hover_state){
-    current_state = HOVER;
+    current_state = "HOVER";
     traj_path = path;
 
     start_pose = hover_state;
@@ -27,27 +27,33 @@ void SendCommandCircle::cmdCallback(const ros::TimerEvent& event){
             start_time = current_time;
             start_state = 0;
         }
-    }else
+    }else{
         start_state = 1;
+        start_time = 0;
+        start_planning_time = 0;
+    }
 
 
     // HOVER STATE
-    if(!start_state && rc_state == 1 && current_state == HOVER){
-
-        if(current_time - start_time > 10){
-            cmd = start_pose;
+    if(!start_state && rc_state == 1 && current_state == "HOVER"){
+        
+        if(current_time - start_time > 10){  
             start_planning_time = current_time;
-            current_state == CIRCLE;
+            current_state = "CIRCLE";
         }
+        cout << current_time - start_time << " " << current_state << endl;
+        cmd = start_pose;
     }
 
     // CIRCLE STATE
-    if(!start_state && rc_state == 1 && current_state == CIRCLE){
+    if(!start_state && rc_state == 1 && current_state == "CIRCLE"){
+        ROS_INFO("ENTER CIRCLE STATE !");
         double dt = current_time - start_planning_time;
-        if(dt > csv_data_[data_ptr].time){
+        if(dt >= csv_data_[data_ptr].time){
             cmd.pose.position.x = csv_data_[data_ptr].position(0);
             cmd.pose.position.y = csv_data_[data_ptr].position(1);
             cmd.pose.position.z = csv_data_[data_ptr].position(2);
+            
             tf::Quaternion oq_;
             oq_.setRPY(0, 0, csv_data_[data_ptr].psi);
             cmd.pose.orientation.x = oq_.x();
@@ -56,6 +62,7 @@ void SendCommandCircle::cmdCallback(const ros::TimerEvent& event){
             cmd.pose.orientation.w = oq_.w();
             data_ptr ++;
         }
+
         if(data_ptr == csv_data_.size())
             data_ptr --;
     }
@@ -63,6 +70,7 @@ void SendCommandCircle::cmdCallback(const ros::TimerEvent& event){
     // pulish
     cmd.header.stamp = ros::Time::now();
     pos_cmd_pub.publish(cmd);
+    ROS_INFO("PUBLISH POSITON: %f, %f, %f", cmd.pose.position.x, cmd.pose.position.y, cmd.pose.position.z);
 }
 
 
@@ -119,7 +127,7 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "cmd_test");
     string datapath = "test.txt";
-    string trajpath = "/home/ldd/quarotor_controller/src/quarotor_control/library/" + datapath;
+    string trajpath = "/home/ldd/quarotor_controller/src/quarotor_feedback_controller/library/" + datapath;
     geometry_msgs::PoseStamped hover_state;
 
     hover_state.pose.position.x = 0;

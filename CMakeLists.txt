@@ -45,7 +45,7 @@ add_executable(quarotor_feedback_controller1
               src/ParamLoad.cpp
 )
 
-add_executable(SendCmdTest
+add_executable(SendCommandCircle
               # src/SendCmdTest.cpp
               src/SendCommandCircle.cpp
               )
@@ -58,6 +58,11 @@ target_link_libraries(quarotor_feedback_controller1
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(SendCmdTest
+target_link_libraries(SendCommandCircle
   ${catkin_LIBRARIES}
+)
+
+catkin_install_python(PROGRAMS
+  script/vel.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

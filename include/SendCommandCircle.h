@@ -37,7 +37,7 @@ class SendCommandCircle{
         const double FREQUENCY = 0.05; //频率
         bool rc_state = 0;
         bool start_state = 1;
-        int current_state;
+        string current_state;
         string traj_path;
         std::vector<std::string> split_vec(std::string str,std::string s);
         vector<PathPoint> csv_data_;

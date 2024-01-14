@@ -149,6 +149,7 @@ void OffboardWrapper::subscriber()
                                                                             10,
                                                                             &OffboardWrapper::positioncmdCallback,
                                                                             this);
+
   // arming_client = nh.serviceClient<mavros_msgs::CommandBool>(uav_id + "/mavros/cmd/arming");
   // set_mode_client = nh.serviceClient<mavros_msgs::SetMode>(uav_id + "/mavros/set_mode");
   // offb_set_mode.request.custom_mode = "OFFBOARD";
@@ -171,10 +172,12 @@ void OffboardWrapper::subscriber()
 //   wrapper_current_state_ = *msg;
 //   wrap_data.current_state_ = wrapper_current_state_.mode;
 // }
+
 void OffboardWrapper::rc_state_Callback(const mavros_msgs::VFR_HUD::ConstPtr &msg){
   wrap_data.rc_state = msg->heading;
   // std::cout<<msg->heading<<std::endl;
 }
+
 void OffboardWrapper::velocityCallback(const geometry_msgs::TwistStamped::ConstPtr &msg)
 {
   geometry_msgs::TwistStamped wrapper_current_velo;
@@ -203,14 +206,16 @@ void OffboardWrapper::positioncmdCallback(const geometry_msgs::PoseStamped::Cons
   planning_position_setpoint_.pose.position.y = cmd->pose.position.y;
   planning_position_setpoint_.pose.position.z = cmd->pose.position.z;
 
-  tf::Quaternion oq_;
-  oq_.setX(cmd->pose.orientation.x);
-  oq_.setY(cmd->pose.orientation.y);
-  oq_.setZ(cmd->pose.orientation.z);
-  oq_.setW(cmd->pose.orientation.w);
-  double roll, pitch, psi;
-  tf::Matrix3x3(oq_).getRPY(roll, pitch, psi);
-  psi_cmd_ = psi;
+  // tf::Quaternion oq_;
+  // oq_.setX(cmd->pose.orientation.x);
+  // oq_.setY(cmd->pose.orientation.y);
+  // oq_.setZ(cmd->pose.orientation.z);
+  // oq_.setW(cmd->pose.orientation.w);
+  // double roll, pitch, psi;
+  // tf::Matrix3x3(oq_).getRPY(roll, pitch, psi);
+  // psi_cmd_ = psi;
+
+  psi_cmd_ = 0;
 }
 
 // void OffboardWrapper::localCallback(const geometry_msgs::PoseStamped::ConstPtr &msg)
@@ -275,10 +280,10 @@ void OffboardWrapper::run()
 {
   wrap_data.begin_time = ros::Time::now();
   QuadrotorFeedbackController c1(start_position_setpoint_, &wrap_data);
-  QuadrotorAggressiveController c2(&wrap_data);
-  getEndPoint(); // end_position_setpoint_ from this function
-  c2.readCsvData(dataset_address);
-  QuadrotorFeedbackController c3(end_position_setpoint_, &wrap_data);
+  // QuadrotorAggressiveController c2(&wrap_data);
+  // getEndPoint(); // end_position_setpoint_ from this function
+  // c2.readCsvData(dataset_address);
+  // QuadrotorFeedbackController c3(end_position_setpoint_, &wrap_data);
 
   ros::Rate rate(LOOP_FREQUENCY);
 
@@ -334,7 +339,7 @@ void OffboardWrapper::run()
         ROS_INFO("RESET PLANNING");
       }else
       {
-        printf("enter planning!!\n");
+        // printf("enter planning!!\n");
         c1.loadLatestData();
         c1.positionPlanningFeedback(planning_position_setpoint_);
         c1.velocityPlanningFeedback(psi_cmd_);
@@ -356,9 +361,9 @@ void OffboardWrapper::run()
 
     case END:
       // printf("aggressive flight is done!!\n");
-      c3.loadLatestData();
-      c3.positionControlFeedback();
-      c3.velocityControlFeedback();
+      // c3.loadLatestData();
+      // c3.positionControlFeedback();
+      // c3.velocityControlFeedback();
       break;
     default:
       break;
