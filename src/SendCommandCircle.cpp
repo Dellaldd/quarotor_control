@@ -133,7 +133,7 @@ int main(int argc, char **argv)
     string trajpath = "/home/coolpi/work/openvins/quarotor_control/src/quarotor_feedback_controller/library/" + datapath;
     geometry_msgs::PoseStamped hover_state;
 
-    hover_state.pose.position.x = 0;
+    hover_state.pose.position.x = -1.5;
     hover_state.pose.position.y = 0;
     hover_state.pose.position.z = 1;
     hover_state.pose.orientation.x = 0;
