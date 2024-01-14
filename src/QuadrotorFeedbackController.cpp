@@ -348,7 +348,16 @@ void QuadrotorFeedbackController::velocityPlanningFeedback(double psi_cmd){
     eval_ptr_ = 0;
   else
     eval_ptr_ += 1;
-  double yaw_rate_cmd = 6.0f * (psi_cmd_ - psi_);
+
+  double yaw_diff = psi_cmd_ - psi_;
+
+  if(yaw_diff > 3)
+    yaw_diff = psi_cmd_ - psi_ - 6.2832;
+  
+  if(yaw_diff < -3)
+    yaw_diff = psi_cmd_ - psi_ + 6.2832;
+
+  double yaw_rate_cmd = 6.0f * yaw_diff;
   tf::Quaternion oq_;
   oq_.setRPY(phi_cmd_, theta_cmd_, psi_cmd_ - psi_);
 

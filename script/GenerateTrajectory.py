@@ -28,7 +28,7 @@ class Circle:
             
         self.writetitle()
         self.writedata()
-        
+            
     def writetitle(self):
         self.f.write("# timestamp tx ty tz psi")
         self.f.write('\r\n') 
