@@ -28,9 +28,12 @@ void SendCommandCircle::cmdCallback(const ros::TimerEvent& event){
             start_state = 0;
         }
     }else{
+        cmd = start_pose;
         start_state = 1;
         start_time = 0;
         start_planning_time = 0;
+	current_state = "HOVER";
+	data_ptr = 0;
     }
 
 
@@ -126,13 +129,17 @@ void SendCommandCircle::loadtrajectorydata(){
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "cmd_test");
-    string datapath = "test.txt";
-    string trajpath = "/home/ldd/quarotor_controller/src/quarotor_feedback_controller/library/" + datapath;
+    string datapath = "circle_yaw.txt";
+    string trajpath = "/home/coolpi/work/openvins/quarotor_control/src/quarotor_feedback_controller/library/" + datapath;
     geometry_msgs::PoseStamped hover_state;
 
     hover_state.pose.position.x = 0;
     hover_state.pose.position.y = 0;
     hover_state.pose.position.z = 1;
+    hover_state.pose.orientation.x = 0;
+    hover_state.pose.orientation.y = 0;
+    hover_state.pose.orientation.z = 0;
+    hover_state.pose.orientation.w = 1;
 
     SendCommandCircle sendcommandcircle(trajpath, hover_state); 
     ros::spin();

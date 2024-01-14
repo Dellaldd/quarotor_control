@@ -8,11 +8,9 @@
   </node>
 
   <node pkg="quarotor_feedback_controller" type="SendCommandCircle" name="SendCommandCircle" output="screen">
-    <!-- <rosparam file="$(find quarotor_feedback_controllecr)/config/param.yaml" command="load" /> -->
   </node>
   
   <node pkg="quarotor_feedback_controller" type="vel.py" name="CaculateVel" output="screen">
-    <!-- <rosparam file="$(find quarotor_feedback_controller)/config/param.yaml" command="load" /> -->
   </node>
 
     

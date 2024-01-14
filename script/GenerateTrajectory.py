@@ -21,7 +21,7 @@ class Circle:
             print(theta)
             current_time = total_time / iter_count * i
             position_x = self.radius - self.radius * np.cos(theta)
-            position_y = self.radius * np.sin(theta)
+            position_y = -self.radius * np.sin(theta)
             position_z = 1
             psi = self.yaw_range / iter_count * i
             self.trajectory.append([str(current_time), str(position_x), str(position_y), str(position_z), str(psi)])
@@ -43,8 +43,8 @@ class Circle:
 def main():
     radius = 1
     velocity = 0.5
-    yaw = 0
-    savepath = "/home/ldd/quarotor_controller/src/quarotor_control/library/test.txt"
+    yaw = np.pi/2
+    savepath = "/home/coolpi/work/openvins/quarotor_control/src/quarotor_feedback_controller/library/circle_yaw.txt"
     circle = Circle(radius, velocity, savepath, yaw)
     circle.generate()
 

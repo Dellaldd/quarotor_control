@@ -21,7 +21,7 @@ class VelocityBody:
     
     def __init__(self):
         self.euler = Vector3Stamped()
-        rospy.Subscriber("/imu_ekf/odom", PoseStamped, self.posCb)
+        rospy.Subscriber("/vrpn_client_node/jiahao1/pose", PoseStamped, self.posCb)
         # self.pos_pub = rospy.Publisher("mavros/local_position/velocity", TwistStamped, queue_size = 1)# topic 
         # self.pos_pub = rospy.Publisher("mavros/setpoint_accel/accel", Vector3Stamped, queue_size = 1)# topic 
         self.vel_pub = rospy.Publisher("outer_velocity", TwistStamped, queue_size = 10)# topic 
