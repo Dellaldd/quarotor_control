@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 
     hover_state.pose.position.x = -1.5;
     hover_state.pose.position.y = 0;
-    hover_state.pose.position.z = 1;
+    hover_state.pose.position.z = 1.2;
     hover_state.pose.orientation.x = 0;
     hover_state.pose.orientation.y = 0;
     hover_state.pose.orientation.z = 0;
