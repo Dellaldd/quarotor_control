@@ -52,22 +52,21 @@ void SendCommandCircle::cmdCallback(const ros::TimerEvent& event){
     if(!start_state && rc_state == 1 && current_state == "CIRCLE"){
         ROS_INFO("ENTER CIRCLE STATE !");
         double dt = current_time - start_planning_time;
-        if(dt >= csv_data_[data_ptr].time){
-            cmd.pose.position.x = csv_data_[data_ptr].position(0);
-            cmd.pose.position.y = csv_data_[data_ptr].position(1);
-            cmd.pose.position.z = csv_data_[data_ptr].position(2);
-            
-            tf::Quaternion oq_;
-            oq_.setRPY(0, 0, csv_data_[data_ptr].psi);
-            cmd.pose.orientation.x = oq_.x();
-            cmd.pose.orientation.y = oq_.y();
-            cmd.pose.orientation.z = oq_.z();
-            cmd.pose.orientation.w = oq_.w();
-            data_ptr ++;
-        }
 
-        if(data_ptr == csv_data_.size())
-            data_ptr --;
+        while(dt >= csv_data[data_ptr].time && data_ptr <= csv_data.size()-2)
+            data_ptr ++;
+        
+        cmd.pose.position.x = csv_data_[data_ptr].position(0);
+        cmd.pose.position.y = csv_data_[data_ptr].position(1);
+        cmd.pose.position.z = csv_data_[data_ptr].position(2);
+        
+        tf::Quaternion oq_;
+        oq_.setRPY(0, 0, csv_data_[data_ptr].psi);
+        cmd.pose.orientation.x = oq_.x();
+        cmd.pose.orientation.y = oq_.y();
+        cmd.pose.orientation.z = oq_.z();
+        cmd.pose.orientation.w = oq_.w();
+        
     }
     
     // pulish
@@ -129,7 +128,7 @@ void SendCommandCircle::loadtrajectorydata(){
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "cmd_test");
-    string datapath = "no_yaw_oval.txt";
+    string datapath = "no_yaw_traj_1.txt";
     string trajpath = "/home/coolpi/work/openvins/quarotor_control/src/quarotor_feedback_controller/library/" + datapath;
     geometry_msgs::PoseStamped hover_state;
 

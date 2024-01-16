@@ -24,85 +24,66 @@ class Circle:
         frequency = 200
         per_iter_time = 1 / frequency
         
-        per_oval_length = self.TWO_PI * self.radius_b + 4 * (self.radius_a - self.radius_b) 
-        per_line_length = self.z_change
+        oval_length = self.TWO_PI * self.radius_b + 4 * (self.radius_a - self.radius_b)         
+        line_length = self.z_change
         
-        total_length = (2 * self.oval_num - 1) * per_oval_length + 2 * (self.oval_num -1) * per_line_length
+        per_length = np.sqrt(oval_length * oval_length + line_length * line_length)
+        per_length_time = per_length / self.velocity
+        per_length_num = int(per_length_time / per_iter_time)
+        per_height_change = self.z_change / per_length_num
+        per_yaw_change = self.yaw_range / per_length_num
         
-        per_oval_time = per_oval_length / self.velocity
-        per_oval_num = int(per_oval_time / per_iter_time)
-        
-        per_line_time = per_line_length / self.velocity
-        per_line_num = int(per_line_time / per_iter_time)
-        
-        iter_count = (2 * self.oval_num - 1) * per_oval_num + 2 * (self.oval_num -1) * per_line_num 
+        total_length = 2 * (self.oval_num - 1) * per_length
+        total_count = 2 * (self.oval_num - 1) * per_length_num 
          
         total_time = total_length /self.velocity
         print(" total time: ", total_time)
-        
-        
-        
-        per_oval_iter = 0
-        per_line_iter = 0
-        traj_state = "CIRCLE"
+
+        per_iter = 0
         line_state = "ADD"
         psi_state = "ADD"
         
         height = self.height
         yaw = 0
-        per_height_change = self.z_change / per_line_num
         max_height = self.height + (self.oval_num -1) * self.z_change
         
-        for i in range(int(iter_count)):
-                
-            if(traj_state == "CIRCLE"):
-                per_oval_iter += 1
-                theta = self.TWO_PI / per_oval_num * per_oval_iter
-                position_x = -self.radius_a * np.cos(theta)
-                position_y = self.radius_b * np.sin(theta)
-                position_z = height
-                if(psi_state == "ADD"):
-                    yaw = yaw + self.yaw_range / per_oval_num 
-                    psi = yaw
-                
-                if(psi_state == "MINUS"):
-                    yaw = yaw - self.yaw_range / per_oval_num
-                    psi = yaw
-                    
-                if(per_oval_iter == per_oval_num):
-                    # print("change state")
-                    per_oval_iter = 0
-                    traj_state = "LINE"
-                    
-                    if(psi_state == "ADD"):
-                        psi_state = "MINUS"
-                    else:
-                        psi_state = "ADD"
-                    
-                    if(abs(height - max_height) < 0.1):
-                        line_state = "MINUS"
-                    continue
-                        
-            if(traj_state == "LINE"):
-                position_x = -self.radius_a
-                position_y = 0
-                
-                per_line_iter = per_line_iter + 1
-                if(line_state == "MINUS"):
-                    height = height - per_height_change
-                    position_z = height
-                
-                if(line_state == "ADD"):
-                    height = height + per_height_change
-                    position_z = height
-                
-                if(per_line_iter == per_line_num):
-                    per_line_iter = 0
-                    traj_state = "CIRCLE"
-                
-            current_time = total_time / iter_count * i
-
+        for i in range(int(total_count)):
             
+            theta = self.TWO_PI / per_length_num * per_iter
+            position_x = -self.radius_a * np.cos(theta)
+            position_y = self.radius_b * np.sin(theta)
+            position_z = height
+            psi = yaw
+            
+            if(psi_state == "ADD"):
+                yaw = yaw + per_yaw_change
+                
+            
+            if(psi_state == "MINUS"):
+                yaw = yaw - per_yaw_change
+                
+            
+            if(line_state == "ADD"):
+                height = height + per_height_change 
+            
+            if(line_state == "MINUS"):
+                height = height - per_height_change
+
+                
+            if(per_iter == per_length_num):
+                per_iter = 0
+                if(psi_state == "ADD"):
+                    psi_state = "MINUS"
+                else:
+                    psi_state = "ADD"
+                
+                if(abs(height - max_height) < 0.01):
+                    line_state = "MINUS"
+                continue
+
+            per_iter += 1
+                
+            current_time = total_time / total_count * i     
             self.trajectory.append([str(current_time), str(position_x), str(position_y), str(position_z), str(psi)])
             
         self.writetitle()
@@ -126,9 +107,9 @@ def main():
     oval_num = 5
     z_change = 0.1
     
-    velocity = 3
-    yaw = np.pi/2
-    savepath = "/home/ldd/quarotor_controller/src/quarotor_feedback_controller/library/line_3.txt"
+    velocity = 0.5
+    yaw = 0
+    savepath = "/home/ldd/quarotor_controller/src/quarotor_feedback_controller/library/no_yaw_traj_0_5.txt"
     circle = Circle(height, radius_a, radius_b, oval_num, z_change, yaw, velocity, savepath)
     circle.generate()
 
