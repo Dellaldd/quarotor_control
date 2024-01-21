@@ -101,15 +101,15 @@ class Circle:
         
 
 def main():
-    radius_a = 1.5
-    radius_b = 1
+    radius_a = 1.4
+    radius_b = 0.9
     height = 1.2
     oval_num = 5
     z_change = 0.1
     
-    velocity = 0.5
+    velocity = 3
     yaw = 0
-    savepath = "/home/ldd/quarotor_controller/src/quarotor_feedback_controller/library/no_yaw_traj_0_5.txt"
+    savepath = "/home/ldd/quarotor_controller/src/quarotor_feedback_controller/library/small_traj_3.txt"
     circle = Circle(height, radius_a, radius_b, oval_num, z_change, yaw, velocity, savepath)
     circle.generate()
 
