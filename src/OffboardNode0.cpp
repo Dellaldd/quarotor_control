@@ -4,9 +4,9 @@ int main(int argc, char **argv){
   ros::init(argc, argv, "offb_node");
   // ros::NodeHandle nh;
   geometry_msgs::PoseStamped g_position_setpoint0, g_position_setpoint1;
-  g_position_setpoint0.pose.position.x = -1.5;
+  g_position_setpoint0.pose.position.x = -1.4;
   g_position_setpoint0.pose.position.y = 0.0;
-  g_position_setpoint0.pose.position.z = 1.2;
+  g_position_setpoint0.pose.position.z = 0.6;
 
   // g_position_setpoint1.pose.position.x = 0;
   // g_position_setpoint1.pose.position.y = 0;

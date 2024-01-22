@@ -44,16 +44,14 @@ void SendCommandCircle::cmdCallback(const ros::TimerEvent& event){
             start_planning_time = current_time;
             current_state = "CIRCLE";
         }
-        cout << current_time - start_time << " " << current_state << endl;
         cmd = start_pose;
     }
 
     // CIRCLE STATE
     if(!start_state && rc_state == 1 && current_state == "CIRCLE"){
-        ROS_INFO("ENTER CIRCLE STATE !");
         double dt = current_time - start_planning_time;
 
-        while(dt >= csv_data[data_ptr].time && data_ptr <= csv_data.size()-2)
+        while(dt >= csv_data_[data_ptr].time && data_ptr <= csv_data_.size()-2)
             data_ptr ++;
         
         cmd.pose.position.x = csv_data_[data_ptr].position(0);
@@ -128,13 +126,13 @@ void SendCommandCircle::loadtrajectorydata(){
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "cmd_test");
-    string datapath = "no_yaw_traj_1.txt";
+    string datapath = "small_traj_0_5.txt";
     string trajpath = "/home/coolpi/work/openvins/quarotor_control/src/quarotor_feedback_controller/library/" + datapath;
     geometry_msgs::PoseStamped hover_state;
 
-    hover_state.pose.position.x = -1.5;
+    hover_state.pose.position.x = -1.4;
     hover_state.pose.position.y = 0;
-    hover_state.pose.position.z = 1.2;
+    hover_state.pose.position.z = 0.6;
     hover_state.pose.orientation.x = 0;
     hover_state.pose.orientation.y = 0;
     hover_state.pose.orientation.z = 0;

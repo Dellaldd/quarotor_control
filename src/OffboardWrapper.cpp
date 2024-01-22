@@ -217,7 +217,6 @@ void OffboardWrapper::positioncmdCallback(const geometry_msgs::PoseStamped::Cons
     psi = psi - 2 * 3.14;
   }
   psi_cmd_ = psi;
-  ROS_INFO("PSI: %f", psi_cmd_);
   // psi_cmd_ = 0;
 }
 
@@ -313,12 +312,10 @@ void OffboardWrapper::run()
     switch (current_status_)
     {
     case HOVER:
-      printf("enter hover!!\n");
       isAtSetpoint();
       c1.loadLatestData();
       if(!wrap_data.rc_state){
         c1.reset_error_sum_both_pv();
-        ROS_INFO("RESET I");
       }
       c1.positionControlFeedback();
       c1.velocityControlFeedback();
@@ -339,7 +336,6 @@ void OffboardWrapper::run()
     case PLANNING:
       if(!wrap_data.rc_state){
         current_status_ = HOVER;
-        ROS_INFO("RESET PLANNING");
       }else
       {
         // printf("enter planning!!\n");

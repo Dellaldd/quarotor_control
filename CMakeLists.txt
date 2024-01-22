@@ -50,6 +50,10 @@ add_executable(SendCommandCircle
               src/SendCommandCircle.cpp
               )
 
+add_executable(ConverterImu
+          src/ConverterImu.cpp
+        )
+
 target_link_libraries(quarotor_feedback_controller0
   ${catkin_LIBRARIES}
 )
@@ -59,6 +63,10 @@ target_link_libraries(quarotor_feedback_controller1
 )
 
 target_link_libraries(SendCommandCircle
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(ConverterImu
   ${catkin_LIBRARIES}
 )
 
